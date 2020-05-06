@@ -2,10 +2,11 @@ import { Navigation } from "react-native-navigation";
 
 Navigation.setDefaultOptions({
     navigationBar : {
-        backgroundColor : "#8fd681"
+        backgroundColor : "#aaa"
     },
     bottomTabs : {
-        titleDisplayMode : "alwaysShow"
+        titleDisplayMode : "alwaysShow",
+        elevation : 40
     },
     
         
@@ -61,6 +62,7 @@ export const bottomTabsLayout = () => {
                 options: {
                   bottomTab: {
                     text: 'Home',
+                    selectedTextColor : "black",
                     icon : require("./assets/signin.png"),
                     testID: 'FIRST_TAB_BAR_BUTTON'
                   }
@@ -69,10 +71,11 @@ export const bottomTabsLayout = () => {
             },
             {
               component: {
-                name: 'Todo',
+                name: 'Today',
                 options: {
                   bottomTab: {
                     text: 'Today',
+                    selectedTextColor : "black",
                     icon : require("./assets/signup.png"),
                     testID: 'SECOND_TAB_BAR_BUTTON'
                   }

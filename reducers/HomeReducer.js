@@ -1,19 +1,23 @@
 const HomeReducer = (state = {
-    isFetchingWeather : false, 
-    isFetchingNews : false, 
+    isFetchingWeather : false,
     weather : [],
-    news : []
 }, action) => {
     switch (action.type) {
-        case "DATA_REQUESTED":
+        case "WEATHER_REQUESTED":
             return {
                 ...state,
                 isFetchingWeather : true
             }; break;
-        case "DATA_RECEIVED":
+        case "WEATHER_RECEIVED":
             return {
                 ...state,
-                weather : action.payload
+                weather : action.payload,
+                isFetchingWeather : false
+            }; break;
+        case "WEATHER_FAILED":
+            return {
+                ...state,
+                isFetchingWeather : false
             }; break;
         default:
             return state; break;

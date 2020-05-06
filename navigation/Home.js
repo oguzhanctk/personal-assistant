@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Button, ImageBackground } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Button, ImageBackground, FlatList, Dimensions } from "react-native";
 import { Navigation } from "react-native-navigation";
 import Icon from "react-native-vector-icons/Feather";
+import AsyncStorage from "@react-native-community/async-storage"
+
 
 export default class Home extends Component {
     
@@ -17,6 +19,47 @@ export default class Home extends Component {
             }
         };
     }
+
+    storeData = async () => {
+        try {
+          await AsyncStorage.setItem('@todos', JSON.stringify(this.props.todos))
+        } catch (e) {
+          console.log(e)
+        }
+    }
+    
+    getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('@todos')
+            if(value !== null) {
+                let formatValue = JSON.parse(value)
+                this.props.fromLocalToStore(formatValue)
+            }
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    componentDidMount = () => {
+        this.getData()
+    }
+
+    componentWillUnmount = () => {
+        this.storeData()
+    }
+
+    renderItem = ({item}) => (
+        <View style={styles.todoContainer}>
+            <Text>{item.content}</Text>
+            <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => {
+                    this.props.deleteTodo(item.id.toString())
+            }}>
+                <Icon name="trash-2" size={21} color="darkred"/>
+            </TouchableOpacity>
+        </View>
+    )
     
     render() {
         return(
@@ -34,18 +77,26 @@ export default class Home extends Component {
                     }/> */}
                     <Text>{this?.props?.weatherData?.currently?.ozone}</Text>
                 </ImageBackground>
-                <Text style={{flex : 1}}>dasdasdddsa</Text>
+                
+                <View style={styles.listContainer}>
+                    <FlatList
+                        data={this.props.todos}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item) => item.id.toString()}
+                    />
+                </View>
+                <View style={styles.buttonContainer}/>
                 <TouchableOpacity 
-                    style={styles.fab} 
-                    onPress={() => {
-                        Navigation.push(this.props.componentId, {
-                            component : {
-                                name : "Todo"
-                            }
-                        });
-                    }}>
-                    <Icon name="plus" size={20}/>
-                </TouchableOpacity>
+                        style={styles.fab} 
+                        onPress={() => {
+                            Navigation.push(this.props.componentId, {
+                                component : {
+                                    name : "Todo"
+                                }
+                            });
+                        }}>
+                        <Icon name="plus" size={20}/>
+                    </TouchableOpacity>
             </View>
         )
     }
@@ -53,7 +104,7 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     fab : {
-        borderWidth:1,
+        borderWidth:1.3,
         borderColor:'rgba(0,0,0,0.2)',
         alignItems:'center',
         justifyContent:'center',
@@ -69,9 +120,35 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: "column"
     },
+    listContainer : {
+        flex : 8,
+        backgroundColor : "#e3dddc",
+    },
+    todoContainer : {
+        height : Dimensions.get("window").height / 10,
+        borderWidth : 1.3,
+        borderColor : "gray",
+        borderRadius : 5,
+        marginVertical : 1,
+        marginHorizontal : 5,
+        padding : 7,
+        flexDirection : "row",
+        justifyContent : "space-between",
+        backgroundColor : "white"
+    },
     image: {
-      flex: 1,
+      flex: 4,
       resizeMode: "cover",
       justifyContent: "center",
+    },
+    deleteButton : {
+        width : Dimensions.get("window").width / 7,
+        justifyContent : "center",
+        alignItems : "center",
+        padding : 3,
+    },
+    buttonContainer : {
+        flex : 1,
+        backgroundColor : "#87b0af"
     }
 })
