@@ -9,6 +9,7 @@ export const getData = (url) => {
         });
         axios.get(url)
             .then((response) => {
+                console.log(response)
                 dispatch({
                     type : "WEATHER_RECEIVED",
                     payload : response.data
@@ -29,6 +30,11 @@ const deleteTodo = (id) => ({
     payload : id
 })
 
+const doneTodo = (id) => ({
+    type : "DONE_TODO",
+    payload : id
+})
+
 const fromLocalToStore = (todos) => ({
     type : "FROM_LOCAL_TO_STORE",
     payload : todos
@@ -42,7 +48,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     fetchDataFromApi : (url) => dispatch(getData(url)),
     fromLocalToStore : (todos) => dispatch(fromLocalToStore(todos)),
-    deleteTodo : (id) => dispatch(deleteTodo(id))
+    deleteTodo : (id) => dispatch(deleteTodo(id)),
+    done : (id) => dispatch(doneTodo(id))
 }); 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

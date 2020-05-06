@@ -9,10 +9,9 @@ export const getData = (url) => {
         });
         axios.get(url)
             .then((response) => {
-                console.log(response.data.articles);
                 dispatch({
                     type : "NEWS_RECEIVED",
-                    payload : response.data.articles
+                    payload : response.data.articles.slice(0, 10)
                 })
             })
             .catch((err) => {

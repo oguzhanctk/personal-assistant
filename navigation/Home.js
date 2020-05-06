@@ -12,6 +12,10 @@ export default class Home extends Component {
         Navigation.events().bindComponent(this);
     }
 
+    state = {
+        done : false
+    }
+
     static get options() {
         return {
             topBar : {
@@ -42,6 +46,7 @@ export default class Home extends Component {
 
     componentDidMount = () => {
         this.getData()
+        // this.props.fetchDataFromApi("api.openweathermap.org/data/2.5/weather?q=London&appid=578e2ff008b0e96f6d3d5f4112ccaa9f")
     }
 
     componentWillUnmount = () => {
@@ -50,13 +55,29 @@ export default class Home extends Component {
 
     renderItem = ({item}) => (
         <View style={styles.todoContainer}>
-            <Text>{item.content}</Text>
+            <View style={{...styles.textContainer}}>
+                <Text 
+                    style={{
+                        ...styles.textStyle, 
+                        textDecorationLine : item.done == true ? "line-through" : "none",
+                        textDecorationColor : "black",
+                        textDecorationStyle : "double"}}>
+                            {item.content}
+                </Text>
+            </View>
             <TouchableOpacity 
                 style={styles.deleteButton}
                 onPress={() => {
                     this.props.deleteTodo(item.id.toString())
             }}>
                 <Icon name="trash-2" size={21} color="darkred"/>
+            </TouchableOpacity>
+            <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => {
+                    this.props.done(item.id)
+            }}>
+                <Icon name="check-square" size={21} color="green"/>
             </TouchableOpacity>
         </View>
     )
@@ -65,25 +86,34 @@ export default class Home extends Component {
         return(
             <View style={styles.container}>
                 <ImageBackground 
-                    source={{uri : "https://i.imgur.com/zHX9M7j.jpg"}}
+                    source={{uri : "https://i.imgur.com/YzayrtY.jpg"}}
                     style={styles.image}> 
-                    {/* <Button 
-                        title="assads"
-                        onPress={
-                            () => {
-                                this.props.fetchDataFromApi("https://api.darksky.net/forecast/55040b055de63740624ea457e8f8e649/37.8267,-122.4233")
-
-                            }
-                    }/> */}
-                    <Text>{this?.props?.weatherData?.currently?.ozone}</Text>
+                    <View style={styles.cityContainer}>
+                        <Text style={styles.cityText}>Ankara</Text>
+                    </View>
+                    <View style={styles.BottomSideContainer}>
+                        <View>
+                            <Text style={styles.temperature}>{/*this.props.weatherData.currently.apparentTemperature*/}23<Text style={{fontSize : 55}} >&#176;</Text></Text>
+                        </View>
+                        <View>
+                            <Text style={styles.summary}>{/*this.props.weatherData.currently.summary*/}Parçalı Bulutlu</Text>
+                        </View>
+                    </View>
                 </ImageBackground>
-                
                 <View style={styles.listContainer}>
-                    <FlatList
-                        data={this.props.todos}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item) => item.id.toString()}
-                    />
+                    {
+                        (this.props.todos.length === 0) ?
+                        (<View style={styles.emptyList}>
+                            <Icon name="list" size={Dimensions.get("window").height / 5.7} color="gray"/>
+                            <Text style={{...styles.emptyText, letterSpacing : 1}}>Bugün için bir planınız yok mu ?</Text>
+                            <Text style={{...styles.emptyText, fontSize : 12, marginTop : 4}}>Ekleye tıklayın ve oluşturmaya başlayın</Text>
+                        </View>) : 
+                        (<FlatList
+                                data={this.props.todos}
+                                renderItem={this.renderItem}
+                                keyExtractor={(item) => item.id.toString()}/>)
+                    }
+                    
                 </View>
                 <View style={styles.buttonContainer}/>
                 <TouchableOpacity 
@@ -125,19 +155,20 @@ const styles = StyleSheet.create({
         backgroundColor : "#e3dddc",
     },
     todoContainer : {
-        height : Dimensions.get("window").height / 10,
+        height : Dimensions.get("window").height / 9,
         borderWidth : 1.3,
         borderColor : "gray",
         borderRadius : 5,
         marginVertical : 1,
         marginHorizontal : 5,
-        padding : 7,
+        padding : 3,
         flexDirection : "row",
         justifyContent : "space-between",
         backgroundColor : "white"
     },
     image: {
       flex: 4,
+      flexDirection : "column",
       resizeMode: "cover",
       justifyContent: "center",
     },
@@ -145,10 +176,56 @@ const styles = StyleSheet.create({
         width : Dimensions.get("window").width / 7,
         justifyContent : "center",
         alignItems : "center",
-        padding : 3,
+        padding : 1,
+        flex : 1
     },
     buttonContainer : {
         flex : 1,
         backgroundColor : "#87b0af"
+    },
+    BottomSideContainer : {
+        flex : 1,
+        flexDirection : "row",
+        alignItems : "center",
+        justifyContent : "center"
+    },
+    cityContainer : {
+        flex : 1,
+        justifyContent : "center",
+        alignItems : "center"
+    },
+    cityText : {
+        fontSize : 40,
+        color : "white",
+        letterSpacing : 1,
+        fontWeight : "bold"
+    },
+    temperature : {
+        fontSize : 35,
+        color : "white",
+        letterSpacing : 1,
+        fontWeight : "bold",
+        marginRight : 17
+    },
+    summary : {
+        fontSize : 23,
+        color : "white"
+    },
+    textContainer : {
+        justifyContent : "center",
+        overflow : "hidden",
+        flex : 5
+    },
+    textStyle : {
+        fontSize : 17
+    },
+    emptyList : {
+        flex : 1,
+        justifyContent : "center",
+        alignItems : "center"
+    },
+    emptyText : {
+        color : "gray",
+        fontSize : 19,
     }
 })

@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, View, StyleSheet, Text, TextInput, Dimensions } from "react-native";
+import { View, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
 import { Navigation } from "react-native-navigation";
+import Icon from "react-native-vector-icons/Feather";
 
 class Todo extends React.Component {
     state = {
@@ -21,39 +22,43 @@ class Todo extends React.Component {
     render() {
         return(
             <View style = {styles.container}>
-                <TextInput
-                    editable={true}
-                    maxLength={100}
-                    multiline
-                    numberOfLines={6}
-                    onChangeText={text => this.onChangeText(text)}
-                    style={{borderWidth : 1}}
-                />
-                <View style={styles.buttonContainer}>
-                    <Button 
-                        title="go back"
-                        onPress={() => {
-                            Navigation.pop(this.props.componentId)
-                        }}
-                    />
-                    <Button 
-                        title="add"
-                        onPress={() => {
-                            let max = 0
-                            this.props.todos.map(item => {
-                                if(item.id > max) {
-                                    max = item.id
-                                }
-                            });
-                            let formatTodo = {
-                                "content" : this.state.todoContent,
-                                "id" : max + 1
-                            }
-                            this.props.addTodo(formatTodo)
-                        }}
-                    />
+                <View style={{flex : 1, justifyContent : "center", alignItems : "center"}}>
+                    <Icon name="list" size={Dimensions.get("window").height / 5.7} color="gray"/>
                 </View>
-                <Text>{this.state.todoContent}</Text>
+                <View style={{flex : 2}}>
+                    <TextInput
+                        editable={true}
+                        maxLength={50}
+                        multiline
+                        numberOfLines={2}
+                        onChangeText={text => this.onChangeText(text)}
+                        style={styles.input}
+                        placeholder="Bir şeyler yazın..."
+                        placeholderTextColor="#cccccc"
+                    />
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            onPress={async () => {
+                                let max = 0
+                                this.props.todos.map(item => {
+                                    if(item.id > max) {
+                                        max = item.id
+                                    }
+                                });
+                                let formatTodo = {
+                                    content : this.state.todoContent,
+                                    id : max + 1,
+                                    done : false
+                                }
+                                await this.props.addTodo(formatTodo)
+                                Navigation.pop(this.props.componentId)
+                            }}
+                            style={styles.button}    
+                        >
+                            <Text style={styles.buttonText}>Oluştur</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
         )
     }
@@ -62,7 +67,7 @@ class Todo extends React.Component {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        backgroundColor : "lightblue",
+        backgroundColor : "#e3dddc",
         justifyContent : "center",
         paddingHorizontal : 15
     },
@@ -71,6 +76,26 @@ const styles = StyleSheet.create({
         flexDirection : "row",
         justifyContent : "space-around",
         alignItems : "center"
+    },
+    input : {
+        backgroundColor : "#edeef0",
+        borderWidth : 0.5,
+        borderColor : "gray",
+        fontSize : 17
+    },
+    button : {
+        backgroundColor : "#355dbd",
+        width : Dimensions.get("window").width / 5,
+        height : 33,
+        justifyContent : "center",
+        alignItems : "center",
+        padding : 7,
+        borderRadius : 3
+    },
+    buttonText : {
+        fontSize : 16,
+        fontWeight : "bold",
+        color : "white"
     }
 })
 
