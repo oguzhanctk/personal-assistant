@@ -69,7 +69,7 @@ class Today extends Component {
                         (<View style={styles.indicatorContainer}>
                             <ActivityIndicator size="large" color="#0000ff" />
                         </View>) :
-                        (<View style={{flex : 11, backgroundColor : "#e3dddc"}}>
+                        (<View style={{flex : 11, backgroundColor : "white"}}>
                             <FlatList
                                 data={this.props.news}
                                 renderItem={this.renderItem}
@@ -87,13 +87,14 @@ const styles = StyleSheet.create({
     newContainer : {
         flexDirection : "row",
         flex : 1,
-        margin : 5,
+        margin : 4,
         padding : 7,
         justifyContent : "center",
         alignItems : "center",
-        borderWidth : 0.5,
-        borderRadius : 3,
-        backgroundColor : "#edeef0"
+        borderBottomWidth : 1.5,
+        borderRadius : 0,
+        backgroundColor : "white",
+        elevation : 15
 
     },
     image : {

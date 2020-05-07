@@ -28,7 +28,7 @@ class Todo extends React.Component {
                 <View style={{flex : 2}}>
                     <TextInput
                         editable={true}
-                        maxLength={50}
+                        maxLength={60}
                         multiline
                         numberOfLines={2}
                         onChangeText={text => this.onChangeText(text)}

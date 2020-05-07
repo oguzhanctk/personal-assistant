@@ -8,7 +8,9 @@ Navigation.setDefaultOptions({
         titleDisplayMode : "alwaysShow",
         elevation : 40
     },
-    
+    layout : {
+      orientation : ["portrait"]
+    },
         
 })
 
