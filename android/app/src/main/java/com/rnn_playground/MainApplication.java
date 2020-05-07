@@ -1,4 +1,4 @@
-package com.rnn_playground;
+package com.personal_assistant;
 
 import android.app.Application;
 import android.content.Context;

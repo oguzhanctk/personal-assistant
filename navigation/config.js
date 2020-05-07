@@ -6,3 +6,16 @@ export const categoryDeclaration = [
     {"type" : "spor", "genre" : "sports", "color" : "#517db8", "id" : "5"},
     {"type" : "teknoloji", "genre" : "technology", "color" : "green", "id" : "6"}
 ]
+
+export const weatherDeclaration = {
+    "clear-day" : "Gökyüzü açık",
+    "clear-night" : "Gökyüzü açık", 
+    "rain" : "Yağmurlu", 
+    "snow" : "Karlı", 
+    "sleet" : "Sulu kar",
+    "wind" : "Rüzgarlı", 
+    "fog" : "Sisli", 
+    "cloudy" : "Bulutlu", 
+    "partly-cloudy-day" : "Parçalı bulutlu",
+    "partly-cloudy-night" : "Parçalı bulutlu"
+}

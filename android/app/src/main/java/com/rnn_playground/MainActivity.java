@@ -1,4 +1,4 @@
-package com.rnn_playground;
+package com.personal_assistant;
 
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Button, ImageBackground, Flat
 import { Navigation } from "react-native-navigation";
 import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-community/async-storage"
-
+import { weatherDeclaration } from "./config";
 
 export default class Home extends Component {
     
@@ -46,7 +46,7 @@ export default class Home extends Component {
 
     componentDidMount = () => {
         this.getData()
-        // this.props.fetchDataFromApi("api.openweathermap.org/data/2.5/weather?q=London&appid=578e2ff008b0e96f6d3d5f4112ccaa9f")
+        this.props.fetchDataFromApi("https://api.darksky.net/forecast/0c4cf63b2c3e3a393860cc1e195d76b3/39.925533,32.866287?exclude=hourly,daily,minutely")
     }
 
     componentWillUnmount = () => {
@@ -93,10 +93,10 @@ export default class Home extends Component {
                     </View>
                     <View style={styles.BottomSideContainer}>
                         <View>
-                            <Text style={styles.temperature}>{/*this.props.weatherData.currently.apparentTemperature*/}23<Text style={{fontSize : 55}} >&#176;</Text></Text>
+                            <Text style={styles.temperature}>{Math.floor((this.props.weatherData?.currently?.apparentTemperature - 32) * 0.55) || "17"}<Text style={{fontSize : 55}} >&#176;</Text></Text>
                         </View>
                         <View>
-                            <Text style={styles.summary}>{/*this.props.weatherData.currently.summary*/}Parçalı Bulutlu</Text>
+                            <Text style={styles.summary}>{weatherDeclaration[this.props.weatherData?.currently?.icon] || "Parçalı Bulutlu"}</Text>
                         </View>
                     </View>
                 </ImageBackground>

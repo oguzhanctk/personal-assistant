@@ -9,7 +9,7 @@ export const getData = (url) => {
         });
         axios.get(url)
             .then((response) => {
-                console.log(response)
+                console.log(response.data)
                 dispatch({
                     type : "WEATHER_RECEIVED",
                     payload : response.data
